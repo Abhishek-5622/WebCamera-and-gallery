@@ -3,6 +3,8 @@
 //Store Reference
 let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
+let captureBtn=document.querySelector("#click-picture");
+
 //create constraints => hardware device
 let constraints = { video: true, audio: true };
 //mediaRecorder => for recording
@@ -62,3 +64,35 @@ navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
     link.remove();
   };
 });
+
+//click on click button
+captureBtn.addEventListener('click',function()
+{
+  capture();
+})
+
+//click pand download photo
+function capture()
+{
+  //create canvas tag
+  let c = document.createElement('canvas');
+  //set width an height
+  c.width=videoPlayer.videoWidth;
+  c.height=videoPlayer.videoHeight;
+  //create tool
+  let tool = c.getContext('2d');
+  //draw image
+  tool.drawImage(videoPlayer,0,0);
+  //create anchore tag
+  let link =document.createElement('a');
+  //add download attribute
+  link.download='image.png';
+  //add href
+  link.href=c.toDataURL();
+  //click on anchore
+  link.click();
+  //remove anchore
+  link.remove();
+  //remove canvas
+  c.remove();
+}

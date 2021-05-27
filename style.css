@@ -21,7 +21,15 @@
     border: none;
   }
   
-  
+  #click-picture{
+    position: fixed;
+    right: 6rem;
+    top: 56vh;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    border: none;
+  }
  
   .video-container {
     height: 100vh;
