@@ -146,18 +146,24 @@ navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
     let blob = new Blob(chunks, { type: "video/mp4" });
     //array get empty for new files
     chunks = [];
+
+    //add video in index database
+    addMediaToGallery(blob,'video');
+
+// **************to download video*****************
     //create url
-    var blobUrl = URL.createObjectURL(blob);
-    // create anchore tag
-    var link = document.createElement("a");
-    //set href attributes
-    link.href = blobUrl;
-    //set downoad attribute => name of file with extension
-    link.download = `${Date.now()}.mp4`;
-    //click on anchore tag
-    link.click();
-    //remove anchore tag
-    link.remove();
+    // var blobUrl = URL.createObjectURL(blob);
+    // // create anchore tag
+    // var link = document.createElement("a");
+    // //set href attributes
+    // link.href = blobUrl;
+    // //set downoad attribute => name of file with extension
+    // link.download = `${Date.now()}.mp4`;
+    // //click on anchore tag
+    // link.click();
+    // //remove anchore tag
+    // link.remove();
+    // ********************************************
   };
 });
 
@@ -199,17 +205,22 @@ function capture()
       tool.fillStyle = filter;
       tool.fillRect(0,0,c.width,c.height);
   }
-  
+  //add image in index database
+  addMediaToGallery(c.toDataURL(),'img');
+
+// ***********to download img*******************
   //create anchore tag
-  let link =document.createElement('a');
-  //add download attribute
-  link.download='image.png';
-  //add href
-  link.href=c.toDataURL();
-  //click on anchore
-  link.click();
-  //remove anchore
-  link.remove();
-  //remove canvas
+  // let link =document.createElement('a');
+  // //add download attribute
+  // link.download='image.png';
+  // //add href
+  // link.href=c.toDataURL();
+  // //click on anchore
+  // link.click();
+  // //remove anchore
+  // link.remove();
+
+// ***********************************************
+//remove canvas
   c.remove();
 }
