@@ -1,4 +1,5 @@
-//create request => create ya open database
+let galleryContainerBox = document.querySelector(".gallery_container");
+// /create request => create ya open database
 let request = indexedDB.open('Camera',1);
 //database
 let db;
@@ -39,7 +40,7 @@ function addMediaToGallery(data,type)
 function viewMedia()
 {
     //get body
-    let body = document.querySelector('body');
+    // let body = document.querySelector('body');
     //set transaction
     let tx = db.transaction('gallery','readonly');
     //set gallery store
@@ -65,6 +66,7 @@ function viewMedia()
                 vidContainer.classList.add('gallery-vid-container');
                 //create video
                 let video = document.createElement('video');
+                video.classList.add('g_video');
                 //append
                 vidContainer.appendChild(video);
                 //create button
@@ -83,16 +85,19 @@ function viewMedia()
                 downloadBtn.innerText='Download';
 
                 downloadBtn.addEventListener('click',downloadBtnHandler);
+                let b_container = document.createElement('div');
+                b_container.classList.add('b_container');
+                vidContainer.appendChild(b_container);
                 //append
-                vidContainer.appendChild(deleteBtn);
-                vidContainer.appendChild(downloadBtn);
+                b_container.appendChild(deleteBtn);
+                b_container.appendChild(downloadBtn);
                 //add controls and autoplay
                 video.controls=true;
                 video.autoplay= true;
                 //add source
                 video.src = URL.createObjectURL(cursor.value.media);
                 //append to body
-                body.appendChild(vidContainer);
+                galleryContainerBox.appendChild(vidContainer);
             }
             else{
                 //create div container
@@ -103,6 +108,7 @@ function viewMedia()
                 imgContainer.classList.add('gallery-img-container');
                 //create img tag
                 let img = document.createElement('img');
+                img.classList.add('g_img');
                 //add source
                 img.src = cursor.value.media;
                 //append
@@ -123,11 +129,14 @@ function viewMedia()
                 downloadBtn.innerText='Download';
 
                 downloadBtn.addEventListener('click',downloadBtnHandler);
+                let b_container = document.createElement('div');
+                b_container.classList.add('b_container');
+                imgContainer.appendChild(b_container);
                 //append
-                imgContainer.appendChild(deleteBtn);
-                imgContainer.appendChild(downloadBtn);
+                b_container.appendChild(deleteBtn);
+                b_container.appendChild(downloadBtn);
                 //append to body
-                body.appendChild(imgContainer);
+                galleryContainerBox.appendChild(imgContainer);
 
             }
             //continue 
@@ -147,42 +156,59 @@ function deleteMediaFromGallery(mId)
 //delete from ui and db
 function deleteBtnHandler(e)
 {
-    let mId = e.currentTarget.parentNode.getAttribute('data-mId');
+    let mId = e.currentTarget.parentNode.parentNode.getAttribute('data-mId');
     //delete from db
     deleteMediaFromGallery(mId);
-    e.currentTarget.parentNode.remove();
+    e.currentTarget.parentNode.parentNode.remove();
 }
 
 
+
+// function downloadBtnHandler(e)
+// {
+//     let mId = e.currentTarget.parentNode.getAttribute('data-mId');
+    
+//     let mediaType = e.currentTarget.parentNode.classList.value.split("-")[1];
+//     if(mediaType=='img')
+//     {
+//         // create anchore tag
+//   let link =document.createElement('a');
+//   //add download attribute
+//   link.download=`${Date.now()}.png`;
+//   //add href
+//   link.href= e.currentTarget.parentNode.childNodes[0].getAttribute("src");
+//   //click on anchore
+//   link.click();
+//   //remove anchore
+//   link.remove();
+//     }
+//     else if(mediaType=="vid")
+//     {
+//     // create anchore tag
+//     var link = document.createElement("a");
+//     //set href attributes
+//     link.href = e.currentTarget.parentNode.childNodes[0].getAttribute("src");;
+//     //set downoad attribute => name of file with extension
+//     link.download = `${Date.now()}.mp4`;
+//     //click on anchore tag
+//     link.click();
+//     //remove anchore tag
+//     link.remove();
+//     }
+// }
+
 function downloadBtnHandler(e)
 {
-    let mId = e.currentTarget.parentNode.getAttribute('data-mId');
-    
-    let mediaType = e.currentTarget.parentNode.classList.value.split("-")[1];
-    if(mediaType=='img')
+    let a = document.createElement('a');
+    a.href = e.currentTarget.parentNode.parentNode.children[0].src;
+    if(e.currentTarget.parentNode.parentNode.children[0].nodeName=='IMG')
     {
-        // create anchore tag
-  let link =document.createElement('a');
-  //add download attribute
-  link.download=`${Date.now()}.png`;
-  //add href
-  link.href= e.currentTarget.parentNode.childNodes[0].getAttribute("src");
-  //click on anchore
-  link.click();
-  //remove anchore
-  link.remove();
+        a.download = 'image.png';
     }
-    else if(mediaType=="vid")
+    else
     {
-    // create anchore tag
-    var link = document.createElement("a");
-    //set href attributes
-    link.href = e.currentTarget.parentNode.childNodes[0].getAttribute("src");;
-    //set downoad attribute => name of file with extension
-    link.download = `${Date.now()}.mp4`;
-    //click on anchore tag
-    link.click();
-    //remove anchore tag
-    link.remove();
+        a.download = 'video.mp4';
     }
+    a.click();
+    a.remove();
 }

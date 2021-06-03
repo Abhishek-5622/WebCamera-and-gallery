@@ -5,8 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body style="background-color: black; ">
+    <button class="gallery-back"><b>BACK</b></button>
+    <div class="heading">Gallery</div>
+    <div class="gallery_container">
+
+    </div>
     <!-- add script file  -->
     <script src='indexDb.js'></script>
     <script>
@@ -15,6 +21,10 @@
             //call view media function
             viewMedia();
         },100)
+        let backBtn = document.querySelector('.gallery-back');
+        backBtn.addEventListener('click',function(){
+            location.assign('index.html');
+        })
     </script>
 </body>
 </html>
